@@ -38,7 +38,7 @@ users = {
 def hello_world():
     return "Hello, world!"
 
-@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users', methods=['GET', 'POST', 'DELETE'])
 def get_users():
    if request.method == 'GET':
       search_username = request.args.get('name')
@@ -56,6 +56,18 @@ def get_users():
       #resp.status_code = 200 #optionally, you can always set a response code. 
       # 200 is the default code for a normal response
       return resp
+   elif request.method == 'DELETE':
+      id_to_delete = request.args.get('id')
+      for i in range(len(users['users_list'])):
+          user = users['users_list'][i]
+          if user['id'] == id_to_delete:
+              users['users_list'].pop(i)
+              resp = jsonify(success=True)
+              return resp
+              
+      #resp.status_code = 200 #optionally, you can always set a response code. 
+      # 200 is the default code for a normal response
+      return jsonify(success=False)
 
 @app.route('/users/<id>')
 def get_user(id):
