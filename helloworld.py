@@ -65,6 +65,9 @@ def get_users():
       return users
    elif request.method == 'POST':
       userToAdd = request.get_json()
+      if "id" not in userToAdd:
+         new_id = generate_id(userToAdd)
+         userToAdd['id'] = new_id
       users['users_list'].append(userToAdd)
       resp = jsonify(success=True)
       resp.status_code = 201 #optionally, you can always set a response code. 
@@ -91,3 +94,11 @@ def get_user(id):
            return user
       return ({})
    return users
+
+
+# Generates an id based on the 1st 4 letters of the name
+# and the number of items in the userlist
+def generate_id(entry):
+   num = len(users['users_list'])
+   max_index = min(len(entry['name']), 4)
+   return entry['name'][:max_index] + str(num)
