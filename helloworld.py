@@ -80,6 +80,7 @@ def get_users():
           if user['id'] == id_to_delete:
               users['users_list'].pop(i)
               resp = jsonify(success=True)
+              resp.status_code = 200
               return resp
               
       #resp.status_code = 200 #optionally, you can always set a response code. 
